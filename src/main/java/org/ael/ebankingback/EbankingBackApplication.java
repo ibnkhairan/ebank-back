@@ -12,6 +12,7 @@ import org.ael.ebankingback.repositories.AccountOperationRepository;
 import org.ael.ebankingback.repositories.BankAccountRepository;
 import org.ael.ebankingback.repositories.CustomerRepository;
 import org.ael.ebankingback.service.BankAccountService;
+import org.ael.ebankingback.service.CustomerAccountService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -33,16 +34,16 @@ public class EbankingBackApplication {
 
 
     //@Bean
-    CommandLineRunner commandLineRunner(BankAccountService bankAccountService){
+    CommandLineRunner commandLineRunner(BankAccountService bankAccountService, CustomerAccountService customerAccountService){
         return args -> {
                 Stream.of("Hassan","Mohamed","Imane").forEach(name->{
                     CustomerDTO customer = new CustomerDTO();
                     customer.setName(name);
                     customer.setEmail(name+"@gmail.com");
 
-                    bankAccountService.saveCustomer(customer);
+                    customerAccountService.saveCustomer(customer);
                 });
-                bankAccountService.listCustomers().forEach(customer -> {
+            customerAccountService.listCustomers().forEach(customer -> {
                     try {
                         bankAccountService.saveCurrentBankAccount(Math.random()*9000,9000, customer.getId());
                         bankAccountService.saveSavingtBankAccount(Math.random()*120000,5.5, customer.getId());

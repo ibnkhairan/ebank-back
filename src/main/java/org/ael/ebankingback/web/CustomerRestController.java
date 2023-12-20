@@ -6,6 +6,7 @@ import org.ael.ebankingback.dto.CustomerDTO;
 import org.ael.ebankingback.entities.Customer;
 import org.ael.ebankingback.exceptions.CustomerNotFoundException;
 import org.ael.ebankingback.service.BankAccountService;
+import org.ael.ebankingback.service.CustomerAccountService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,33 +15,34 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class CustomerRestController {
-    private BankAccountService bankAccountService;
+
+    private CustomerAccountService customerAccountService;
 
     @GetMapping("/customers")
     public List<CustomerDTO> customers(){
-        return  bankAccountService.listCustomers();
+        return  customerAccountService.listCustomers();
     }
 
     @GetMapping("/customers/{id}")
     public CustomerDTO getCustomer(@PathVariable(name = "id") Long customerId) throws CustomerNotFoundException {
-        return bankAccountService.getCustomer(customerId);
+        return customerAccountService.getCustomer(customerId);
     }
 
     @PostMapping("/customers")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
 
-        return bankAccountService.saveCustomer(customerDTO);
+        return customerAccountService.saveCustomer(customerDTO);
     }
 
     @PutMapping("/customers/{customerId}")
     public CustomerDTO updateCustomer(@PathVariable Long customerId,@RequestBody CustomerDTO customerDTO){
                 customerDTO.setId(customerId);
-                return bankAccountService.updateCustomer(customerDTO);
+                return customerAccountService.updateCustomer(customerDTO);
     }
 
     @DeleteMapping("/customers/{id}")
     public void deleteCustomer(@PathVariable Long id){
-            bankAccountService.deleteCustomer(id);
+        customerAccountService.deleteCustomer(id);
     }
 
 }
