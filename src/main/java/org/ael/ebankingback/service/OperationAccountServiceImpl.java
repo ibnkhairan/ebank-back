@@ -43,7 +43,7 @@ public class OperationAccountServiceImpl implements OperationAccountService{
     public AccountHistoryDTO getAccountOperationHistory(String accountId, int page, int size) throws BankAccountNotFoundException {
         BankAccount bankAccount = bankAccountRepository.findById(accountId).orElse(null);
         if(bankAccount == null) throw new BankAccountNotFoundException("Account Not Found");
-        Page<AccountOperation> accountOperations = accountOperationRepository.findByBankAccountId(accountId, PageRequest.of(page, size));
+        Page<AccountOperation> accountOperations = accountOperationRepository.findByBankAccountIdOrderByOperationDateDesc(accountId, PageRequest.of(page, size));
         AccountHistoryDTO accountHistoryDTO = new AccountHistoryDTO();
         //accountOperations.stream().map(accountOperation -> dto.fromAccountOperation(accountOperation)).collect(Collectors.toList());
         List<AccountOperationDTO> accountOperationDTOS = accountOperations.stream().map(dto::fromAccountOperation).collect(Collectors.toList());

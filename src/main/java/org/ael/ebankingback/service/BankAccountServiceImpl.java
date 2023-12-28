@@ -105,7 +105,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     private void operationEffectue(BankAccount bankAccount,double amount, String description,OperationType operationType){
-
+        log.info("operationEffectue a faire");
         double balance =0;
         if(operationType.equals(OperationType.DEBIT))
             balance = bankAccount.getBalance()-amount;
@@ -121,31 +121,38 @@ public class BankAccountServiceImpl implements BankAccountService {
         accountOperationRepository.save(accountOperation);
         bankAccount.setBalance(balance);
         bankAccountRepository.save(bankAccount);
+        log.info("operationEffectue et le montant restant est de "+balance);
+
     }
 
 
     @Override
     public void debit(String accountId, double amount, String description) throws BankAccountNotFoundException, BalanceNotSufficientException {
+        log.info("Debit du compte "+accountId + " d'un montant de "+amount);
         BankAccount bankAccount = findBankAccountById(accountId);
 
         if(bankAccount.getBalance() < amount)
             throw new BalanceNotSufficientException("Solde insuffisant");
-
+        log.info("le montant du compte est de " + bankAccount.getBalance());
         operationEffectue(bankAccount,amount,description,OperationType.DEBIT);
-
+        log.info("Fin Debit du compte ");
     }
 
     @Override
     public void credit(String accountId, double amount, String description) throws BankAccountNotFoundException {
+        log.info("Credit du compte "+accountId + "d'un montant de "+amount);
         BankAccount bankAccount = findBankAccountById(accountId);
 
         operationEffectue(bankAccount,amount,description,OperationType.CREDIT);
+        log.info("Fin Credit du compte ");
     }
 
     @Override
     public void transfert(String accountIdSource, String accountIdDestination, double amount) throws BankAccountNotFoundException, BalanceNotSufficientException {
+        log.info("Debut Transfert d'argent du compte source "+accountIdSource +" vers le compte destination "+ accountIdDestination+" pour un montant de "+amount);
         debit(accountIdSource,amount,"transfert to "+accountIdDestination);
         credit(accountIdDestination,amount,"transfert from "+accountIdSource);
+        log.info("Fin Trabsfert de compte ");
     }
 
     @Override
