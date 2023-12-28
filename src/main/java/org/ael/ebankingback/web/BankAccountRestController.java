@@ -7,14 +7,12 @@ import org.ael.ebankingback.dto.BankAccountDTO;
 import org.ael.ebankingback.exceptions.BankAccountNotFoundException;
 import org.ael.ebankingback.service.BankAccountService;
 import org.ael.ebankingback.service.OperationAccountService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 public class BankAccountRestController {
 
     private final BankAccountService bankAccountService;

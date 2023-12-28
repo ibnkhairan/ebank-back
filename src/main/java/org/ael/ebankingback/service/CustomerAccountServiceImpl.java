@@ -77,4 +77,12 @@ public class CustomerAccountServiceImpl implements CustomerAccountService{
         }*/
         return customerDTOList;
     }
+
+    @Override
+    public List<CustomerDTO> searchCustomers(String keyword) {
+        log.info("Chercher la liste des clients");
+        List<Customer> customers = customerRepository.searchCustomers(keyword);
+        List<CustomerDTO> customerDTOS = customers.stream().map(cust -> customerMapper.fromCustomer(cust)).collect(Collectors.toList());
+        return customerDTOS;
+    }
 }

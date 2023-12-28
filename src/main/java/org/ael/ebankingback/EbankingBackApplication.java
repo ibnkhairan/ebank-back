@@ -33,7 +33,7 @@ public class EbankingBackApplication {
     }
 
 
-    //@Bean
+
     CommandLineRunner commandLineRunner(BankAccountService bankAccountService, CustomerAccountService customerAccountService){
         return args -> {
                 Stream.of("Hassan","Mohamed","Imane").forEach(name->{
@@ -61,6 +61,16 @@ public class EbankingBackApplication {
                 }
             }
         };
+    }
+
+    CommandLineRunner start2(AccountOperationRepository accountOperationRepository ){
+        return args -> {
+          accountOperationRepository.findAll().forEach(accountOperation -> {
+              accountOperation.setDescription(accountOperation.getType().toString());
+              accountOperationRepository.save(accountOperation);
+          });
+        };
+
     }
 
     CommandLineRunner start(CustomerRepository customerRepository,

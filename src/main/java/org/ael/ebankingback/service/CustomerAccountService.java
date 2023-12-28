@@ -13,4 +13,6 @@ public interface CustomerAccountService {
     void deleteCustomer(Long customerId);
     CustomerDTO saveCustomer(CustomerDTO customerDTO);
     List<CustomerDTO> listCustomers();
+
+    List<CustomerDTO> searchCustomers(String keyword);
 }
