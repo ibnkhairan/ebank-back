@@ -1,5 +1,6 @@
 package org.ael.ebankingback.service;
 
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.ael.ebankingback.dto.CustomerDTO;
 import org.ael.ebankingback.entities.Customer;
@@ -42,7 +43,7 @@ public class CustomerAccountServiceImpl implements CustomerAccountService{
     }
 
     @Override
-    public CustomerDTO getCustomer(Long customerId) throws CustomerNotFoundException {
+    public CustomerDTO getCustomer(@NonNull Long customerId) throws CustomerNotFoundException {
         Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new CustomerNotFoundException("customer not found"));
         return customerMapper.fromCustomer(customer);
     }
@@ -57,7 +58,7 @@ public class CustomerAccountServiceImpl implements CustomerAccountService{
     }
 
     @Override
-    public void deleteCustomer(Long customerId){
+    public void deleteCustomer(@NonNull Long customerId) throws CustomerNotFoundException{
         customerRepository.deleteById(customerId);
     }
 

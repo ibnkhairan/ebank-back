@@ -5,6 +5,7 @@ import org.ael.ebankingback.dto.CurrentBankAccountDTO;
 import org.ael.ebankingback.dto.CustomerDTO;
 import org.ael.ebankingback.dto.SavingBankAccountDTO;
 import org.ael.ebankingback.exceptions.BalanceNotSufficientException;
+import org.ael.ebankingback.exceptions.BankAccountEmptyException;
 import org.ael.ebankingback.exceptions.BankAccountNotFoundException;
 import org.ael.ebankingback.exceptions.CustomerNotFoundException;
 
@@ -16,9 +17,9 @@ public interface BankAccountService {
     SavingBankAccountDTO saveSavingtBankAccount(double initialBalance, double interestRate, Long customerId) throws CustomerNotFoundException;
 
     BankAccountDTO getBankAccount(String accountId) throws BankAccountNotFoundException;
-    void debit(String accountId,double amount,String description) throws BankAccountNotFoundException, BalanceNotSufficientException;
+    void debit(String accountId,double amount,String description) throws BankAccountNotFoundException, BalanceNotSufficientException, BankAccountEmptyException;
     void credit(String accountId,double amount,String description) throws BankAccountNotFoundException;
-    void transfert(String accountIdSource,String accountIdDestination,double amount) throws BankAccountNotFoundException, BalanceNotSufficientException;
+    void transfert(String accountIdSource,String accountIdDestination,double amount) throws BankAccountNotFoundException, BalanceNotSufficientException, BankAccountEmptyException;
     List<BankAccountDTO> bankAccountList();
 
 

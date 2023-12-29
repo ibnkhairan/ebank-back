@@ -1,5 +1,6 @@
 package org.ael.ebankingback.service;
 
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.ael.ebankingback.dto.AccountHistoryDTO;
 import org.ael.ebankingback.dto.AccountOperationDTO;
@@ -33,14 +34,14 @@ public class OperationAccountServiceImpl implements OperationAccountService{
     }
 
     @Override
-    public List<AccountOperationDTO> accountOperationHistory(String accountId){
+    public List<AccountOperationDTO> accountOperationHistory(@NonNull String accountId){
         List<AccountOperation> bankAccountOperations = accountOperationRepository.findByBankAccountId(accountId);
         //bankAccountOperations.stream().map(accountOperation -> dto.fromAccountOperation(accountOperation)).collect(Collectors.toList());
         return bankAccountOperations.stream().map(dto::fromAccountOperation).collect(Collectors.toList());
     }
 
     @Override
-    public AccountHistoryDTO getAccountOperationHistory(String accountId, int page, int size) throws BankAccountNotFoundException {
+    public AccountHistoryDTO getAccountOperationHistory(@NonNull String accountId,@NonNull int page,@NonNull int size) throws BankAccountNotFoundException {
         BankAccount bankAccount = bankAccountRepository.findById(accountId).orElse(null);
         if(bankAccount == null) throw new BankAccountNotFoundException("Account Not Found");
         Page<AccountOperation> accountOperations = accountOperationRepository.findByBankAccountIdOrderByOperationDateDesc(accountId, PageRequest.of(page, size));

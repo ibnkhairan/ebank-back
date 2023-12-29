@@ -1,5 +1,6 @@
 package org.ael.ebankingback.service;
 
+import lombok.NonNull;
 import org.ael.ebankingback.dto.CustomerDTO;
 import org.ael.ebankingback.exceptions.CustomerNotFoundException;
 
@@ -10,9 +11,9 @@ public interface CustomerAccountService {
 
     CustomerDTO updateCustomer(CustomerDTO customerDTO);
 
-    void deleteCustomer(Long customerId);
+    void deleteCustomer(@NonNull Long customerId) throws CustomerNotFoundException;
     CustomerDTO saveCustomer(CustomerDTO customerDTO);
     List<CustomerDTO> listCustomers();
 
-    List<CustomerDTO> searchCustomers(String keyword);
+    List<CustomerDTO> searchCustomers(@NonNull String keyword);
 }

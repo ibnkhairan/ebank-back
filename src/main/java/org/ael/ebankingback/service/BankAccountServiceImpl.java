@@ -7,6 +7,7 @@ import org.ael.ebankingback.dto.SavingBankAccountDTO;
 import org.ael.ebankingback.entities.*;
 import org.ael.ebankingback.enums.OperationType;
 import org.ael.ebankingback.exceptions.BalanceNotSufficientException;
+import org.ael.ebankingback.exceptions.BankAccountEmptyException;
 import org.ael.ebankingback.exceptions.BankAccountNotFoundException;
 import org.ael.ebankingback.exceptions.CustomerNotFoundException;
 import org.ael.ebankingback.mappers.BankAccountMapper;
@@ -127,7 +128,11 @@ public class BankAccountServiceImpl implements BankAccountService {
 
 
     @Override
-    public void debit(String accountId, double amount, String description) throws BankAccountNotFoundException, BalanceNotSufficientException {
+    public void debit(String accountId, double amount, String description) throws BankAccountNotFoundException, BalanceNotSufficientException, BankAccountEmptyException {
+        log.info("Méthode debit");
+
+        if(accountId == null || accountId.length() <1)
+            throw new BankAccountEmptyException("le numéro du compte n'a pas été saisie");
         log.info("Debit du compte "+accountId + " d'un montant de "+amount);
         BankAccount bankAccount = findBankAccountById(accountId);
 
@@ -148,7 +153,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-    public void transfert(String accountIdSource, String accountIdDestination, double amount) throws BankAccountNotFoundException, BalanceNotSufficientException {
+    public void transfert(String accountIdSource, String accountIdDestination, double amount) throws BankAccountNotFoundException, BalanceNotSufficientException, BankAccountEmptyException {
         log.info("Debut Transfert d'argent du compte source "+accountIdSource +" vers le compte destination "+ accountIdDestination+" pour un montant de "+amount);
         debit(accountIdSource,amount,"transfert to "+accountIdDestination);
         credit(accountIdDestination,amount,"transfert from "+accountIdSource);
