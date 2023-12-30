@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.MissingFormatArgumentException;
 
@@ -104,6 +105,22 @@ public class BankAccountRestController {
                     transfertRequestDTO.getAmount());
 
         }catch(MissingFormatArgumentException |BankAccountNotFoundException| BalanceNotSufficientException | BankAccountEmptyException e){
+            log.error(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+
+    }
+
+    @GetMapping("/customer-accounts/{customerId}")
+    public List<BankAccountDTO> getCustomerAccounts(@PathVariable Long customerId){
+        List<BankAccountDTO> customerAccounts = new ArrayList<>();
+        try{
+            customerAccounts = this.bankAccountService.getCustomerAccounts(customerId);
+            return customerAccounts;
+        }catch ( BankAccountEmptyException e){
+            log.error(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(),e);
+        }catch (BankAccountNotFoundException e){
             log.error(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }

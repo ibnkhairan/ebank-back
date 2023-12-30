@@ -132,7 +132,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         log.info("Méthode debit");
 
         if(accountId == null || accountId.length() <1)
-            throw new BankAccountEmptyException("le numéro du compte n'a pas été saisie");
+            throw new BankAccountEmptyException("le numéro du compte n'a pas été saisie ou incorrect");
         log.info("Debit du compte "+accountId + " d'un montant de "+amount);
         BankAccount bankAccount = findBankAccountById(accountId);
 
@@ -168,6 +168,24 @@ public class BankAccountServiceImpl implements BankAccountService {
 
         }).collect(Collectors.toList());
         return bankAccountDTOS;
+    }
+
+    @Override
+    public List<BankAccountDTO> getCustomerAccounts(Long custumerId) throws BankAccountEmptyException, BankAccountNotFoundException {
+
+        if(custumerId == null )
+            throw new BankAccountEmptyException("le numéro du customer n'a pas été saisie ");
+
+        List<BankAccount> customerAccounts = bankAccountRepository.findBankAccountByCustomerId(custumerId);
+
+        if(  customerAccounts == null || customerAccounts.isEmpty())
+            throw new BankAccountNotFoundException(String.format("compte %s not found",custumerId));
+
+        List<BankAccountDTO> customerAccountDTOS = customerAccounts.stream().map(customerAccount->{
+           return getBank(customerAccount);
+        }).collect(Collectors.toList());
+
+        return customerAccountDTOS;
     }
 
 
